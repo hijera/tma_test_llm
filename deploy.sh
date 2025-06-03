@@ -17,10 +17,7 @@ git checkout -b main
 git add -A
 git commit -m 'deploy'
 
-# Если вы деплоите по адресу https://<USERNAME>.github.io/<REPO>
-# git push -f git@github.com:<USERNAME>/<REPO>.git main:gh-pages
-
-# Если вы деплоите по адресу https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
+# Деплой на GitHub Pages (замените hijera на ваше имя пользователя GitHub)
+git push -f https://github.com/hijera/tma_test_llm.git main:gh-pages
 
 cd .. 

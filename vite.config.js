@@ -9,10 +9,21 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/tma_test_llm/' : './',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    // Обеспечиваем совместимость с TMA
+    target: 'es2015',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   },
   server: {
     port: 3000,
-    host: true
+    host: true,
+    headers: {
+      'X-Frame-Options': 'SAMEORIGIN',
+      'Content-Security-Policy': "frame-ancestors 'self' https://web.telegram.org"
+    }
   }
 }) 
