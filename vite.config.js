@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [vue()],
   // Для GitHub Pages используйте название вашего репозитория
   // Замените 'your-repo-name' на реальное название репозитория
-  base: process.env.NODE_ENV === 'production' ? '/tma_test_llm/' : './',
+  base: process.env.NODE_ENV === 'production' ? '/tma_test_llm/dist/' : './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
