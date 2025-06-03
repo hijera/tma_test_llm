@@ -65,6 +65,7 @@
 import BusinessCardDisplay from './BusinessCardDisplay.vue'
 import BusinessCardActions from './BusinessCardActions.vue'
 import BusinessCardSettings from './BusinessCardSettings.vue'
+import { getTestProfileById, testProfiles } from '../testData.js'
 
 export default {
   name: 'BusinessCard',
@@ -108,9 +109,11 @@ export default {
   
   methods: {
     /**
-     * Загружает данные пользователя из Telegram WebApp API
+     * Загружает данные пользователя из Telegram WebApp API или тестовые данные
      */
     loadUserData() {
+      const isDevelopment = import.meta.env.DEV
+      
       if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
         const user = window.Telegram.WebApp.initDataUnsafe.user
         
@@ -123,18 +126,34 @@ export default {
             photo_url: user.photo_url || '',
             language_code: user.language_code || 'ru'
           }
-        } else {
-          // Для тестирования вне Telegram - демо данные
-          this.userData = {
-            id: 123456789,
-            first_name: 'Иван',
-            last_name: 'Петров',
-            username: 'ivan_petrov',
-            photo_url: '',
-            language_code: 'ru'
+          
+          // В режиме разработки загружаем соответствующие тестовые настройки
+          if (isDevelopment) {
+            const testProfile = getTestProfileById(user.id)
+            if (testProfile) {
+              this.settings = { ...this.settings, ...testProfile.settings }
+              console.log('🎯 Загружены тестовые настройки для пользователя:', testProfile.settings)
+            }
           }
+        } else {
+          this.loadFallbackData()
         }
+      } else {
+        this.loadFallbackData()
       }
+    },
+    
+    /**
+     * Загружает резервные тестовые данные
+     */
+    loadFallbackData() {
+      // Для тестирования вне Telegram - используем первый тестовый профиль
+      const fallbackProfile = testProfiles[0]
+      
+      this.userData = { ...fallbackProfile.userData }
+      this.settings = { ...this.settings, ...fallbackProfile.settings }
+      
+      console.log('🔄 Загружены резервные тестовые данные:', fallbackProfile)
     },
     
     /**

@@ -8,6 +8,9 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 
+// Тестовые данные для локальной разработки
+import { initializeMockTelegram } from './testData.js'
+
 // Создаем Vuetify с темной темой по умолчанию (как в Telegram)
 const vuetify = createVuetify({
   components,
@@ -16,6 +19,14 @@ const vuetify = createVuetify({
     defaultTheme: 'dark'
   }
 })
+
+// Проверяем, запущено ли приложение в режиме разработки
+const isDevelopment = import.meta.env.DEV
+
+// Если запущено в режиме разработки и нет Telegram WebApp, инициализируем моки
+if (isDevelopment) {
+  initializeMockTelegram()
+}
 
 // Инициализация Telegram Web App
 if (window.Telegram && window.Telegram.WebApp) {
@@ -32,6 +43,13 @@ if (window.Telegram && window.Telegram.WebApp) {
   window.Telegram.WebApp.MainButton.onClick(() => {
     window.Telegram.WebApp.close()
   })
+  
+  // Логируем информацию о Telegram WebApp
+  if (isDevelopment) {
+    console.log('📱 Telegram WebApp инициализирован')
+    console.log('🔧 Данные инициализации:', window.Telegram.WebApp.initDataUnsafe)
+    console.log('🎨 Параметры темы:', window.Telegram.WebApp.themeParams)
+  }
 }
 
 createApp(App).use(vuetify).mount('#app') 

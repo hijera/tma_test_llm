@@ -174,8 +174,19 @@ export default {
       ]
       
       // Выбираем градиент на основе первой буквы имени
-      const firstChar = this.firstName.charAt(0).toUpperCase()
-      const index = firstChar.charCodeAt(0) % colors.length
+      let index = 0
+      if (this.firstName && this.firstName.trim()) {
+        const firstChar = this.firstName.trim().charAt(0).toUpperCase()
+        index = firstChar.charCodeAt(0) % colors.length
+      } else if (this.lastName && this.lastName.trim()) {
+        // Если нет имени, используем фамилию
+        const firstChar = this.lastName.trim().charAt(0).toUpperCase()
+        index = firstChar.charCodeAt(0) % colors.length
+      } else {
+        // Если нет ни имени, ни фамилии, используем случайный индекс
+        index = Math.floor(Math.random() * colors.length)
+      }
+      
       const [color1, color2] = colors[index]
       
       return `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`

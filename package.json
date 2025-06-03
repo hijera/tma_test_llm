@@ -1,6 +1,7 @@
 {
   "name": "telegram-miniapp-business-card",
   "version": "1.0.0",
+  "type": "module",
   "description": "Telegram Mini App для создания визиток",
   "main": "index.js",
   "scripts": {
